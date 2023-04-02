@@ -4,6 +4,14 @@ In this repo I've collected 250 questions from interviews. This list of question
 # Who is it for?
 Project is designed to help with interview preporation on all levels. If you are new to C++, use it to structure your knowledge, find topics you are bad at and fill all the gaps. Mid/sennior developers can use this repo to refresh their knowladge before interview.
 
+# Covered topics:
+- Basics
+- OOP
+- STL, ADS, generics
+- Multithreading
+- Patterns & design principles
+- Project management
+
 # How to contibute? 
 If you know some other frequent questions from interviews and want to add it here, follow this steps:
 - Make an issue
