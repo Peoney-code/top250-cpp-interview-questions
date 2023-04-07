@@ -42,6 +42,7 @@ What is a partition function?
 What is a copy_if function?
 What is a remove_if function?
 What is a unique function?
+What is a std::copy?
 What is a std::transform?
 What is a std::accumulate?
 What is a std::count?

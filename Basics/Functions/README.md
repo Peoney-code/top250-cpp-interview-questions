@@ -210,48 +210,225 @@ In this example, we use a lambda function as the function object to compute the 
 </details>
 
 <details>
-<summary>   What is a function parameter?</summary>
-</details>
-
-<details>
 <summary>   What is a default parameter?</summary>
+A default parameter is a parameter in a function's parameter list that has a default value assigned to it. If a default value is provided for a parameter, then the function can be called without providing an argument for that parameter, and the default value will be used instead.
+
+For example, consider the following function declaration:
+```cpp
+void printMessage(std::string message, int count = 1);
+```
+In this declaration, the second parameter "count" has a default value of 1. This means that if the function is called without providing a value for "count", it will default to 1:
+```cpp
+printMessage("Hello"); // will print "Hello" once
+```
+Alternatively, if a value is provided for "count", it will override the default value:
+```cpp
+printMessage("Hello", 3); // will print "Hello" three times
+```
+Default parameters are a useful feature in C++ because they allow functions to have a simpler interface and reduce the amount of code that needs to be written by providing sensible default values for parameters that are not always needed.
 </details>
 
 <details>
 <summary>   What is an inline function?</summary>
+An inline function is a C++ function that is expanded in place at the point where it is called, rather than being called through a function call mechanism. This means that the code of the function is inserted directly into the calling code, as if it were part of the caller.
+
+The keyword "inline" is used to declare a function as inline, like this:
+```cpp
+inline int add(int x, int y) {
+    return x + y;
+}
+```
+When an inline function is called, the compiler replaces the function call with the actual code of the function, which is copied directly into the compiled program. This can result in faster code execution, because it eliminates the overhead of a function call.
+
+However, there are some cases where the inline function may not be expanded, and instead behaves like a regular function. This can happen if the function is too large to be inlined, or if the function has a complex control flow that the compiler cannot easily optimize.
+
+It is important to note that the decision of whether or not to inline a function is ultimately up to the compiler. The "inline" keyword is a suggestion to the compiler, but it is not a guarantee that the function will be inlined.
 </details>
 
 <details>
 <summary>   What is a constexpr function?</summary>
+A constexpr function is a C++ function that can be evaluated at compile-time, allowing the result to be used in constant expressions. This means that the function is guaranteed to produce the same result every time it is called with the same arguments, and the result can be used in contexts where a constant expression is required, such as array sizes or template arguments.
+
+A constexpr function is declared using the constexpr keyword, like this:
+```cpp
+constexpr int square(int x) {
+    return x * x;
+}
+```
+In C++11, constexpr functions were limited to only containing a single return statement, and could only contain a limited set of operations, such as arithmetic and bitwise operations. In C++14, these restrictions were relaxed, allowing constexpr functions to contain more complex control structures such as loops and conditional statements.
+
+Using constexpr functions can improve program performance by allowing computations to be performed at compile time rather than at runtime, reducing program overhead. However, it is important to note that not all functions are suitable for constexpr evaluation, and the decision of whether to use a constexpr function should be based on the specific requirements of the program.
 </details>
 
 <details>
 <summary>   What is a bind function?</summary>
+In C++, the std::bind function is used to create a new function object that binds arguments to a function. This means that you can take a function that takes n arguments, bind some of them, and create a new function that takes the remaining m arguments, where m <= n.
+
+The general syntax for using std::bind is as follows:
+```cpp
+auto new_function = std::bind(original_function, arg1, arg2, ...);
+```
+Here, original_function is the function you want to bind arguments to, and arg1, arg2, etc. are the arguments you want to bind. The resulting new_function can then be called with the remaining arguments, which are passed to original_function.
+
+For example, suppose we have a function add that takes two integers and returns their sum:
+```cpp
+int add(int x, int y) {
+    return x + y;
+}
+```
+We can use std::bind to create a new function add2 that always adds 2 to its argument:
+```cpp
+auto add2 = std::bind(add, 2, std::placeholders::_1);
+```
+Here, std::placeholders::_1 is a special placeholder object that represents the first argument to the function. The resulting add2 function can be called like this:
+```cpp
+int result = add2(3); // result is 5
+```
+Note that std::bind returns a function object, which can be stored and reused like any other function object. The resulting function object can also be passed to other functions that take a function object as an argument, such as std::for_each.
 </details>
 
 <details>
 <summary>   What is a forward function?</summary>
+std::forward is a utility function provided by the C++ standard library, defined in the '<utility>' header. It is used to perform "perfect forwarding" of arguments to another function, typically a template function or constructor.
+
+Perfect forwarding is a technique used to pass arguments to a function or constructor in a way that preserves their value category (lvalue or rvalue) and constness. This is particularly important when dealing with templates, since the type of the argument is often unknown until the function is instantiated.
+
+std::forward takes a single argument, which is typically named arg and has a template parameter of the form T&&. This allows the argument to be passed as either an lvalue or rvalue reference, depending on the value category of the original argument. The std::forward function then returns the argument cast to the appropriate reference type, preserving its value category.
+
+Here's an example of how std::forward can be used:
+```cpp
+template <typename T>
+void foo(T&& arg) {
+    bar(std::forward<T>(arg));
+}
+```
+In this example, foo is a template function that takes a single argument, arg, of type T&&. It then calls another function, bar, passing the argument to std::forward to ensure that its value category is preserved.
+
+By using std::forward in this way, foo can be used with both lvalues and rvalues, and the argument will be passed to bar in the appropriate form.
 </details>
 
 <details>
 <summary>   What is a functional library?</summary>
+In C++, a functional library is a collection of functions and templates that can be used to implement functional programming paradigms. Functional programming is a programming paradigm that emphasizes the use of functions to perform computations and avoids changing state and mutable data. It is based on the mathematical concept of a function, where the output depends only on the input and not on any hidden state. The functional library in C++ provides a set of generic algorithms and function objects that can be used to implement functional programming concepts like higher-order functions, currying, composition, and lazy evaluation. The functional library in C++ is part of the Standard Template Library (STL) and includes classes like std::function, std::bind, and function objects like std::plus, std::minus, and std::greater.
 </details>
 
 <details>
 <summary>   What is a std::function?</summary>
+
+In C++, std::function is a class template defined in the `<functional>` header that allows storing and invoking callable objects such as functions, function pointers, lambda expressions, and bind expressions. It provides a uniform way to represent different types of callable objects, regardless of their signature, and enables treating them as objects that can be copied, assigned, and stored in containers.
+
+std::function can be used to implement function pointers, callbacks, and other similar functionality in a type-safe way. It is commonly used as a parameter type or return type in interfaces where the exact function to be called is not known at compile time, but determined at runtime.
+
+The class template std::function takes a function signature as a template parameter, which specifies the arguments and return type of the callable object it can hold. For example, `std::function<void(int)>` can hold a callable object that takes an integer argument and returns no value.
+
+std::function is a powerful tool in modern C++ programming that allows implementing generic algorithms and code with higher levels of abstraction and flexibility.
 </details>
 
 <details>
 <summary>   What is a std::bind?</summary>
+
+std::bind is a function template defined in the <functional> header of the C++ standard library. It allows creating a new function object with some of the original function's parameters "bound" to specific values or objects.
+
+The general syntax for using std::bind is:
+```cpp
+auto new_function_object = std::bind(original_function, arg1, arg2, ...);
+```
+
+Here, original_function is the function to be called, and arg1, arg2, etc. are values or objects that are "bound" to some of the parameters of original_function. The resulting new_function_object can then be called as if it were the original function, with any remaining arguments provided at the time of the call.
+
+For example, suppose we have a function add that adds two integers:
+
+```cpp
+int add(int a, int b) {
+    return a + b;
+}
+```
+
+We can use std::bind to create a new function object that adds 5 to any integer passed to it:
+
+```cpp
+auto add_five = std::bind(add, 5, std::placeholders::_1);
+```
+
+Here, std::placeholders::_1 represents the first argument to the resulting function object, which will be supplied at the time of the call. We can then use add_five like this:
+
+```cpp
+int result = add_five(10); // result is 15
+```
+
+In this example, add_five is a new function object that "wraps" the add function, with the first argument "bound" to 5.
 </details>
+
 <details>
 <summary>   What is a function overloading?</summary>
+
+Function overloading is a feature in C++ that allows creating multiple functions with the same name but with different parameters. When a function is overloaded, the compiler determines which version of the function to call based on the number, types, and order of the arguments passed to the function.
+
+For example, consider a simple function named "add" that adds two integers:
+
+```cpp
+int add(int x, int y) {
+    return x + y;
+}
+```
+
+We can overload the "add" function to accept and add other types of data, such as doubles or floats:
+
+```cpp
+double add(double x, double y) {
+    return x + y;
+}
+
+float add(float x, float y) {
+    return x + y;
+}
+```
+
+Now, when we call the "add" function, the compiler determines which version of the function to call based on the types of the arguments passed to it:
+
+```cpp
+int result1 = add(2, 3);      // calls int add(int x, int y)
+double result2 = add(2.5, 3.7); // calls double add(double x, double y)
+float result3 = add(2.5f, 3.7f); // calls float add(float x, float y)
+```
+
+Function overloading is a powerful feature of C++ that allows creating functions with the same name, but with different functionality based on the types of the arguments passed to them.
 </details>
 
 <details>
 <summary>   What is a function overriding?</summary>
+Function overriding is a concept in object-oriented programming that allows a subclass or derived class to provide its own implementation for a method that is already defined in its superclass or base class.
+
+When a method is called on an object of the subclass, the implementation in the subclass is used instead of the implementation in the superclass. This allows the subclass to modify the behavior of the method without changing the interface or signature of the method.
+
+To override a method in C++, the method must be declared in the base class with the virtual keyword, and the subclass must provide its own implementation of the method using the same function signature.
 </details>
 
 <details>
 <summary>   What is a lambda expression?</summary>
+
+A lambda expression is a shorthand notation to define and create an anonymous function object in C++. It allows you to create a function object at the same time you need it, without having to explicitly define a named function elsewhere in your code.
+
+The syntax of a lambda expression generally looks like this:
+
+```cpp
+[capture-list] (parameter-list) -> return-type { function-body }
+```
+
+-   The capture list is used to capture variables from the surrounding scope. It can be empty or contain one or more variables.
+-	The parameter list contains the input parameters of the lambda function.
+-	The return type is optional and can be inferred by the compiler if not specified.
+-	The function body contains the code to be executed when the lambda function is called.
+
+For example, the following lambda expression returns the sum of two integers:
+
+```cpp
+auto sum = [](int a, int b) { return a + b; };
+```
+
+This creates a lambda function object that takes two integers as input parameters and returns their sum. The auto keyword is used to let the compiler deduce the return type of the lambda function. The lambda function can be called as follows:
+
+```cpp
+int result = sum(3, 5); // result is 8
+```
 </details>

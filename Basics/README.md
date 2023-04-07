@@ -994,3 +994,22 @@ Static objects can also be used in conjunction with the Singleton pattern, which
 
 It's important to note that static objects are created and destroyed in a specific order, determined by the order in which they are defined. This can have important implications for programs that rely on global data or initialization order, and care must be taken to ensure that the order is correct.
 </details>
+
+<details>
+<summary>   What is a static_assert?</summary>
+static_assert is a C++ keyword that is used to perform compile-time assertions. It is used to check a condition at compile time and generate a compile-time error if the condition is false.
+
+The syntax for static_assert is as follows:
+```cpp
+static_assert(constant-expression, string-literal);
+```
+where constant-expression is the expression that is checked at compile time, and string-literal is an optional message that is displayed if the assertion fails.
+
+Here's an example:
+```cpp
+static_assert(sizeof(int) == 4, "int must be 4 bytes");
+```
+In this example, we use static_assert to check that the size of an int is 4 bytes. If the condition fails, the compiler will generate an error message with the message "int must be 4 bytes".
+
+static_assert is a powerful feature that can be used to check various properties of the code at compile time, such as the size of types, the value of constants, or the presence of certain macros or preprocessor directives. It can be particularly useful for catching errors early in the development process, before the code is even executed.
+</details>
